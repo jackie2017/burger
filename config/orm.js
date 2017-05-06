@@ -1,79 +1,28 @@
 // Import MySQL connection.
-var connection = require("../config/connection.js");
+var connection = require("./connection");
 
-// Helper function for SQL syntax.
-function printQuestionMarks(num) {
-  var arr = [];
-
-  for (var i = 0; i < num; i++) {
-    arr.push("?");
-  }
-
-  return arr.toString();
-}
-
-// Helper function for SQL syntax.
-function objToSql(ob) {
-  var arr = [];
-
-  for (var key in ob) {
-    if (Object.hasOwnProperty.call(ob, key)) {
-      arr.push(key + "=" + ob[key]);
-    }
-  }
-
-  return arr.toString();
-}
-
-// Object for all our SQL statement functions.
+//To retreive and store data
 var orm = {
-  all: function(tableInput, cb) {
-    var queryString = "SELECT * FROM " + tableInput + ";";
-    connection.query(queryString, function(err, result) {
-      if (err) {
-        throw err;
-      }
-      cb(result);
-    });
-  },
-  create: function(table, cols, vals, cb) {
-    var queryString = "INSERT INTO " + table;
+    selectAll: function(cb) {
+        connection.query("SELECT * FROM burgers", function(err, data) {
+            if (err) throw err;
+            cb(data);
+        });
 
-    queryString += " (";
-    queryString += cols.toString();
-    queryString += ") ";
-    queryString += "VALUES (";
-    queryString += printQuestionMarks(vals.length);
-    queryString += ") ";
+    },
+    insertOne: function(name, devour, date) {
+        connection.query("INSERT INTO burgers(burger_name, devour, date) VALUES(?, ?, ?)", [name, devour, date], function(err, data) {
+            if (err) throw err;
+            console.log("Data posted!!");
+        });
+    },
+    updateOne: function(id) {
+        connection.query("UPDATE burgers SET devour= false WHERE ID = ?", [id], function(err, data) {
+            if (err) throw err;
+            console.log("Data updated");
 
-    console.log(queryString);
-
-    connection.query(queryString, vals, function(err, result) {
-      if (err) {
-        throw err;
-      }
-      cb(result);
-    });
-  },
-  // An example of objColVals would be {name: panther, sleepy: true}
-  update: function(table, objColVals, condition, cb) {
-    var queryString = "UPDATE " + table;
-
-    queryString += " SET ";
-    queryString += objToSql(objColVals);
-    queryString += " WHERE ";
-    queryString += condition;
-
-    console.log(queryString);
-    connection.query(queryString, function(err, result) {
-      if (err) {
-        throw err;
-      }
-
-      cb(result);
-    });
-  }
+        });
+    }
 };
 
-// Export the orm object for the model (cat.js).
 module.exports = orm;

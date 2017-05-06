@@ -2,6 +2,7 @@
 var mysql = require("mysql");
 
 var connection;
+//need for Heroku
 if (process.env.JAWSDB_URL) {
     connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
@@ -11,8 +12,10 @@ if (process.env.JAWSDB_URL) {
         password: "Begin2017",
         database: "burger_db"
     });
-};
+}
+
 connection.connect();
+
 module.exports = connection;
 
 
