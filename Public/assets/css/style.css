@@ -1,5 +1,5 @@
 body{
-    background: skyblue;
+    background: #ede8b6;
 }
 
 ul button{
@@ -13,7 +13,7 @@ li{
 .list{
     display: flex;
     justify-content: space-between;
-    background: lightgrey;
+    background: #ede8b6;
     padding:10px;
     width:100%;
 }
