@@ -10,10 +10,10 @@ if (process.env.JAWSDB_URL) {
         host: "localhost",
         user: "root",
         password: "Begin2017",
-        database: "burger_db"
+        database: "burgers_db"
     });
 }
-
+//or use local server if not heroku
 connection.connect();
 
 module.exports = connection;
